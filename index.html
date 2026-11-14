@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GTA Online – My Car Collection</title>
+  <meta name="description" content="A fan-made catalogue of my GTA Online garages and cars. Search a car to see which garage it is parked in." />
+  <meta name="theme-color" content="#0a0a0b" />
+  <!-- Optional display font (falls back gracefully if offline) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ========== TOP BAR ========== -->
+  <header class="topbar">
+    <a class="brand" href="#/" id="brand" aria-label="Back to dashboard">
+      <span class="brand-mark"></span>
+      <span class="brand-text">
+        <small>GTA ONLINE</small>
+        <strong>MY CAR COLLECTION</strong>
+      </span>
+    </a>
+
+    <div class="gsearch">
+      <input type="search" id="gSearch" placeholder="Search a car or garage…  ( / )" autocomplete="off" spellcheck="false" aria-label="Search cars and garages" />
+    </div>
+
+    <div class="stats" aria-live="polite">
+      <div class="stat"><span id="totalGarages">0</span><label>Garages</label></div>
+      <div class="stat"><span id="totalFloors">0</span><label>Floors</label></div>
+      <div class="stat"><span id="totalCars">0</span><label>Vehicles</label></div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- ========== SEARCH RESULTS ========== -->
+    <section id="searchView" hidden>
+      <div class="page-head">
+        <div>
+          <p class="eyebrow">Search</p>
+          <h1 id="sTitle">Results</h1>
+          <p class="sub" id="sSummary"></p>
+        </div>
+        <button class="btn btn-ghost" id="btnClearSearch">✕ Clear search</button>
+      </div>
+
+      <div id="sGarages" hidden>
+        <h2 class="sec-title">Garages</h2>
+        <div class="grid garage-grid" id="sGarageGrid"></div>
+      </div>
+
+      <div id="sCars" hidden>
+        <h2 class="sec-title">Cars</h2>
+        <div class="grid result-grid" id="sCarGrid"></div>
+        <p class="more-note" id="sMore" hidden></p>
+      </div>
+
+      <div class="empty" id="sEmpty" hidden>
+        <div class="empty-art car"></div>
+        <h3>Nothing found</h3>
+        <p>No car or garage matches that name. Try fewer words or a different spelling.</p>
+      </div>
+    </section>
+
+    <!-- ========== DASHBOARD (all garages) ========== -->
+    <section id="dashboardView">
+      <div class="page-head">
+        <div>
+          <p class="eyebrow">Dashboard</p>
+          <h1>Garages</h1>
+          <p class="sub">Pick a garage, or use the search bar above to find which garage a car is parked in.</p>
+        </div>
+      </div>
+
+      <div class="grid garage-grid" id="garageGrid"></div>
+
+      <div class="empty" id="dashEmpty" hidden>
+        <div class="empty-art"></div>
+        <h3 id="dashEmptyTitle">No garages yet</h3>
+        <p id="dashEmptyText"></p>
+      </div>
+    </section>
+
+    <!-- ========== GARAGE VIEW (floors) ========== -->
+    <section id="garageView" hidden>
+      <nav class="crumbs" aria-label="Breadcrumb" id="garageCrumbs"></nav>
+      <button class="btn btn-ghost back" id="btnBackDash">← Back to Dashboard</button>
+
+      <div class="garage-hero">
+        <div class="hero-cover" id="gvCover"></div>
+        <div class="hero-info">
+          <p class="eyebrow">Garage</p>
+          <h1 id="gvName">Garage</h1>
+          <p class="hero-count" id="gvCount"></p>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="search">
+          <input type="search" id="fSearch" placeholder="Search floors in this garage…" autocomplete="off" />
+        </div>
+        <label class="select">
+          <span>Sort</span>
+          <select id="fSort">
+            <option value="added">Default order</option>
+            <option value="az">A → Z</option>
+            <option value="za">Z → A</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="grid floor-grid" id="floorGrid"></div>
+
+      <div class="empty" id="floorEmpty" hidden>
+        <div class="empty-art floor"></div>
+        <h3 id="floorEmptyTitle">No floors</h3>
+        <p id="floorEmptyText"></p>
+      </div>
+    </section>
+
+    <!-- ========== FLOOR VIEW (cars) ========== -->
+    <section id="floorView" hidden>
+      <nav class="crumbs" aria-label="Breadcrumb" id="floorCrumbs"></nav>
+      <button class="btn btn-ghost back" id="btnBackGarage">← Back to Garage</button>
+
+      <div class="garage-hero floor-hero">
+        <div class="hero-cover" id="fvCover"></div>
+        <div class="hero-info">
+          <p class="eyebrow" id="fvGarageName">Garage</p>
+          <h1 id="fvName">Floor</h1>
+          <p class="hero-count" id="fvCount"></p>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="search">
+          <input type="search" id="cSearch" placeholder="Search cars on this floor…" autocomplete="off" />
+        </div>
+        <label class="select">
+          <span>Sort</span>
+          <select id="cSort">
+            <option value="az">A → Z</option>
+            <option value="za">Z → A</option>
+            <option value="newest">Newest first</option>
+            <option value="oldest">Oldest first</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="grid car-grid" id="carGrid"></div>
+
+      <div class="empty" id="carEmpty" hidden>
+        <div class="empty-art car"></div>
+        <h3 id="carEmptyTitle">This floor is empty</h3>
+        <p id="carEmptyText"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    Fan-made personal catalogue · Not affiliated with or endorsed by Rockstar Games or Take-Two Interactive
+  </footer>
+
+  <noscript><p style="text-align:center;padding:24px">This page needs JavaScript to show the collection.</p></noscript>
+  <script src="script.js"></script>
+</body>
+</html>
